@@ -27,6 +27,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Estadistica *miEstadistica;
+    void showStatistics();
 };
 
 #endif // MAINWINDOW_H

@@ -35,8 +35,26 @@ void MainWindow::on_pBAgregar_clicked()
 void MainWindow::on_pbCalcular_clicked()
 {
     int count = ui->listValores->count();
-    for(int i = 0; i < count;i++){
+    int *nData = new int[count];
+    for(int i = 0; i < count; i++){
         QListWidgetItem *temp = ui->listValores->item(i);
-        //qDebug() << temp->text();
+        QString s = temp->text();
+        nData[i] = s.toInt();
     }
+    this->miEstadistica->setData(nData, count);
+    showStatistics();
+    delete [] nData;
+}
+
+void MainWindow::showStatistics(){
+    float media = this->miEstadistica->getMedia();
+    int menor = this->miEstadistica->getMenor();
+    int mayor = this->miEstadistica->getMayor();
+    int mediana = this->miEstadistica->getMediana();
+    int moda = this->miEstadistica->getModa();
+    this->ui->lblMedia->setText(QString::number(media));
+    this->ui->lblMenor->setText(QString::number(menor));
+    this->ui->lblMayor->setText(QString::number(mayor));
+    this->ui->lblMediana->setText(QString::number(mediana));
+    this->ui->lblModa->setText(QString::number(moda));
 }
