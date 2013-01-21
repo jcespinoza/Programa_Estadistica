@@ -1,4 +1,5 @@
 #include "estadistica.h"
+#include <QDebug>
 
 Estadistica::Estadistica()
 {
@@ -82,17 +83,19 @@ int Estadistica::getModa(){
         return -1;
 
     int index = 0;
-    int maxCount = 0;
-    int count = 0;
+    int maxCount = 1;
+    int count = 1;
     int current = _arreglo[0];
-    for(int i = 0; i < _cuantos; i++){
-        if(_arreglo[i] == current)
+    for(int i = 1; i < _cuantos; i++){
+        qDebug() << "Using " << _arreglo[i];
+        if(_arreglo[i] == current){
             count++;
-        else{
-            maxCount = count;
-            index = i;
-            count = 0;
-        }
+            if(count > maxCount){
+                index = i;
+                maxCount = count;
+            }
+        }else
+            count = 1;
         current = _arreglo[i];
     }
     return _arreglo[index];

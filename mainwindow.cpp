@@ -28,7 +28,8 @@ void MainWindow::on_le_Valor_returnPressed()
 
 void MainWindow::on_pBAgregar_clicked()
 {
-    ui->listValores->addItem(ui->le_Valor->text());
+    if(isInteger(ui->le_Valor->text()))
+        ui->listValores->addItem(ui->le_Valor->text());
     ui->le_Valor->clear();
 }
 
@@ -46,6 +47,10 @@ void MainWindow::on_pbCalcular_clicked()
     delete [] nData;
 }
 
+/**
+ * @brief MainWindow::showStatistics
+ * Se encarga de cambiar el texto de los Labels con los datos de Estadistica
+ */
 void MainWindow::showStatistics(){
     float media = this->miEstadistica->getMedia();
     int menor = this->miEstadistica->getMenor();
@@ -57,4 +62,22 @@ void MainWindow::showStatistics(){
     this->ui->lblMayor->setText(QString::number(mayor));
     this->ui->lblMediana->setText(QString::number(mediana));
     this->ui->lblModa->setText(QString::number(moda));
+}
+
+/**
+ * @brief MainWindow::isInteger
+ * Verifica si una QString representa un entero.
+ * @param q La QString a evaluar.
+ * @return Si la QString es entero o no.
+ */
+bool MainWindow::isInteger(QString q){
+    bool isInt = true;
+    std::string s = q.toStdString();
+      for(int i = 0; i < s.length(); i++){
+        if(!isdigit(s[i])){
+            isInt = false;
+            break;
+        }
+      }
+    return isInt;
 }
