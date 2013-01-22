@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QDebug>
+#include <QIntValidator>
 #include <ctype.h>
 #include <string.h>
 #include "estadistica.h"
@@ -30,11 +31,16 @@ private slots:
 
     void on_pbCalcular_clicked();
 
+    void on_pbLimpiar_clicked();
+
+    void on_pbCargar_clicked();
+
 private:
     Ui::MainWindow *ui;
     Estadistica *miEstadistica;
     void showStatistics();
     bool isInteger(QString q);
+    QIntValidator *validator;
 };
 
 #endif // MAINWINDOW_H

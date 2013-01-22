@@ -87,7 +87,6 @@ int Estadistica::getModa(){
     int count = 1;
     int current = _arreglo[0];
     for(int i = 1; i < _cuantos; i++){
-        qDebug() << "Using " << _arreglo[i];
         if(_arreglo[i] == current){
             count++;
             if(count > maxCount){

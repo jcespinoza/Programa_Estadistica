@@ -1,24 +1,24 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <string>
+#include <QFile>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    int miarreglo[6] = {30, 23, 19, 19, 20, 38};
-
-    this->miEstadistica = new Estadistica(miarreglo, 6);
-
-    qDebug() << "Media es: " << this->miEstadistica->getMedia();
-    qDebug() << "Mediana es: " << this->miEstadistica->getMediana();
-    qDebug() << "Menor es: " << this->miEstadistica->getMenor();
-    qDebug() << "Mayor es: " << this->miEstadistica->getMayor();
+    this->miEstadistica = new Estadistica();
+    validator = new QIntValidator(1, 150, this);
+    ui->le_Valor->setValidator(validator);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete validator;
+    delete miEstadistica;
 }
 
 void MainWindow::on_le_Valor_returnPressed()
@@ -28,7 +28,7 @@ void MainWindow::on_le_Valor_returnPressed()
 
 void MainWindow::on_pBAgregar_clicked()
 {
-    if(isInteger(ui->le_Valor->text()))
+    //if(isInteger(ui->le_Valor->text()))
         ui->listValores->addItem(ui->le_Valor->text());
     ui->le_Valor->clear();
 }
@@ -47,10 +47,6 @@ void MainWindow::on_pbCalcular_clicked()
     delete [] nData;
 }
 
-/**
- * @brief MainWindow::showStatistics
- * Se encarga de cambiar el texto de los Labels con los datos de Estadistica
- */
 void MainWindow::showStatistics(){
     float media = this->miEstadistica->getMedia();
     int menor = this->miEstadistica->getMenor();
@@ -64,12 +60,6 @@ void MainWindow::showStatistics(){
     this->ui->lblModa->setText(QString::number(moda));
 }
 
-/**
- * @brief MainWindow::isInteger
- * Verifica si una QString representa un entero.
- * @param q La QString a evaluar.
- * @return Si la QString es entero o no.
- */
 bool MainWindow::isInteger(QString q){
     bool isInt = true;
     std::string s = q.toStdString();
@@ -80,4 +70,23 @@ bool MainWindow::isInteger(QString q){
         }
       }
     return isInt;
+}
+
+void MainWindow::on_pbLimpiar_clicked()
+{
+    ui->listValores->clear();
+    QString text = QString::fromStdString("No hay Datos");
+    this->ui->lblMedia->setText(text);
+    this->ui->lblMenor->setText(text);
+    this->ui->lblMayor->setText(text);
+    this->ui->lblMediana->setText(text);
+    this->ui->lblModa->setText(text);
+}
+
+void MainWindow::on_pbCargar_clicked()
+{
+    QFileDialog f(this);
+    f.setFileMode(QFileDialog::ExistingFile);
+    f.setNameFilter(QString::fromStdString("Archivos de texto (*.txt)"));
+    f.showFullScreen();
 }
