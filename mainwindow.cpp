@@ -60,18 +60,6 @@ void MainWindow::showStatistics(){
     this->ui->lblModa->setText(QString::number(moda));
 }
 
-bool MainWindow::isInteger(QString q){
-    bool isInt = true;
-    std::string s = q.toStdString();
-      for(int i = 0; i < s.length(); i++){
-        if(!isdigit(s[i])){
-            isInt = false;
-            break;
-        }
-      }
-    return isInt;
-}
-
 void MainWindow::on_pbLimpiar_clicked()
 {
     ui->listValores->clear();
@@ -85,8 +73,16 @@ void MainWindow::on_pbLimpiar_clicked()
 
 void MainWindow::on_pbCargar_clicked()
 {
-    QFileDialog f(this);
-    f.setFileMode(QFileDialog::ExistingFile);
-    f.setNameFilter(QString::fromStdString("Archivos de texto (*.txt)"));
-    f.showFullScreen();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Abrir Archivo"), "..", tr("Archivos de Texto (*.txt)"));
+    QFile data(fileName);
+    if( data.open(QFile::ReadOnly) ){
+        QTextStream stream(&data);
+        int i;
+        QString s;
+        while(!stream.atEnd()){
+            stream >> s;
+            if( s.compare("") != 0)
+                ui->listValores->addItem(s);
+        }
+    }
 }
